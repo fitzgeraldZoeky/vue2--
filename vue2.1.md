@@ -155,8 +155,16 @@ Dep 类的实例化只有两个场景应用，一个是在 observer 类的构造
 ## Dep 类
 
 # Watcher 类
+## 构造函数
+首先他根据传入构造函数的第五个参数来确定 实例化的 watcher 对象是否是 **渲染 watcher** ，每一个组件都有一个 渲染watcher，如果是则把他赋值给 vm._watcher 并且也加入到 vm._watchers 中。
+然后初始化选项，user 代表 是否是 watch 侦听属性的 watcher，cb 通常是 watch 侦听属性中定义的回调函数。 sync 表示是否在接收到更新通知时同步执行调度方法。
+跟着把传参 expOrFn 转换为 getter 函数，如果 expOrFn 是字符串则通过调用 parsePath 函数转换成函数，它主要是按点切分为属性键用来访问对象的属性值。正如上面提到的，三处不同地方实例化对象时传入的 expOrFn 不同导致各自的 getter 各异，但是它们本质都是引用响应式变量，从而触发依赖收集。
+最后判断 lazy 的值，执行计算属性undefined或者直接取值。
 
+## get 方法
+调用 getter 函数，并在其执行过程中触发依赖收集。
 
+![](https://picx.zhimg.com/v2-cdb7752cddabfd01820f4863c990cd18_720w.jpg?source=d16d100b)
 # Markdown extensions
 
 StackEdit extends the standard Markdown syntax by adding extra **Markdown extensions**, providing you with some nice features.
@@ -214,5 +222,5 @@ B --> D{Rhombus}
 C --> D
 ```
 <!--stackedit_data:
-eyJoaXN0b3J5IjpbLTQyNDE5NjExNF19
+eyJoaXN0b3J5IjpbODkwMDE4OF19
 -->
